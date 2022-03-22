@@ -9,7 +9,8 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <Container :post_data=post_data />
+  <Container :post_data=postData />
+  <button @click="getData()">더보기</button>
 
   <div class="footer">
     <ul class="footer-button-plus">
@@ -21,21 +22,40 @@
 
 <script>
 import Container from './components/Container.vue'
+import axios from 'axios'
 
 export default {
   name: 'App',
   components: {
     Container
   },
-  data() {
-    return {
-      post_data: [
-        {likes: 43, userId: 'mi_xx2', contents: 'Hello', date: 'June 6'},
-        {likes: 17, userId: 'food.tomorrow', contents: 'How are you', date: 'July 15'},
-        {likes: 32, userId: 'j_mahaph', contents: 'this is me', date: 'October 30'},
-      ]
+  methods: {
+      getData() {
+        axios.get('https://codingapple1.github.io/vue/more' + this.cnt + '.json').then( result => {
+          console.log('result.data : ', result.data)
+          this.postData.push(result.data)
+          this.cnt++
+        })
+      }
+    },
+    data(){
+      return {
+        cnt: 0,
+        postData: [],
+        post_data: [
+          {likes: 43, name: 'mi_xx2', content: 'Hello', date: 'June 6'},
+          {likes: 17, name: 'food.tomorrow', content: 'How are you', date: 'July 15'},
+          {likes: 32, name: 'j_mahaph', content: 'this is me', date: 'October 30'},
+        ]
+      }
+    },
+
+    setup(){
+    },
+
+    created(){
+        this.getData()
     }
-  }
 }
 </script>
 

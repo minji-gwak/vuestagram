@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Post v-for="(post, i) in post_data" :key="i" :post=post_data[i] />
+        <Post v-for="(post, i) in post_data" :key="i" :post=post />
     </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
         'post_data'
     ],
     components: {
-        Post
-    }
+        Post,
+    },
 }
 </script>
