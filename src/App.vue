@@ -1,20 +1,25 @@
 <template>
   <div class="header">
     <ul class="header-button-left">
-      <li>Cancel</li>
+      <li @click="step--">Cancel</li>
     </ul>
     <ul class="header-button-right">
-      <li>Next</li>
+      <li @click="step++">Next</li>
     </ul>
     <img src="./assets/logo.png" class="logo" />
   </div>
+  <div class="tab-box">
+    <span class="tab" @click="step = 0">1</span>
+    <span class="tab" @click="step = 1">2</span>
+    <span class="tab" @click="step = 2">3</span>
+  </div>
 
-  <Container :post_data=postData />
+  <Container :post_data=postData :step=step :imgURL=imgURL />
   <button @click="getData()">더보기</button>
 
   <div class="footer">
     <ul class="footer-button-plus">
-      <input type="file" id="file" class="inputfile" />
+      <input @change="upload" type="file" id="file" class="inputfile" multiple />
       <label for="file" class="input-plus">+</label>
     </ul>
  </div>
@@ -36,11 +41,20 @@ export default {
           this.postData.push(result.data)
           this.cnt++
         })
+      },
+      upload(e){
+        let file = e.target.files;
+        let url = URL.createObjectURL(file[0]);
+        console.log(url);
+        this.imgURL.push(url)
+        this.step++
       }
     },
     data(){
       return {
         cnt: 0,
+        step: 0,
+        imgURL: [],
         postData: [],
         post_data: [
           {likes: 43, name: 'mi_xx2', content: 'Hello', date: 'June 6'},
@@ -66,6 +80,15 @@ body {
 ul {
   padding: 5px;
   list-style-type: none;
+}
+.tab-box {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 20px;
+}
+.tab {
+  text-align: center;
 }
 .logo {
   width: 22px;
